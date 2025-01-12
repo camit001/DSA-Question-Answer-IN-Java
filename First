@@ -1,4 +1,4 @@
-### Question
+=========================== Question ==============================
 Given an array of strings, return all groups of strings that are anagrams. The strings in each group must be arranged in the order of their appearance in the original array. Refer to the sample case for clarification.
 
 Examples:
@@ -22,3 +22,43 @@ Constraints:
 1<= arr.size() <=100
 1<= arr[i].size() <=10
 
+=========================== Answer ==============================
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class AnagramGroups {
+    public static ArrayList<ArrayList<String>> anagrams(String[] arr) {
+        if (arr == null || arr.length == 0) return new ArrayList<>();
+        Map<String, ArrayList<String>> anagrams = new HashMap<>();
+        
+        for (String str : arr) {
+            char[] charArray = str.toCharArray();
+            Arrays.sort(charArray);
+            String sortedStr = new String(charArray);
+            
+            if (!anagrams.containsKey(sortedStr)) {
+                anagrams.put(sortedStr, new ArrayList<>());
+            }
+            anagrams.get(sortedStr).add(str);
+        }
+        
+        return new ArrayList<>(anagrams.values());
+    }
+
+    public static void main(String[] args) {
+        String[] arr1 = {"act", "god", "cat", "dog", "tac"};
+        String[] arr2 = {"no", "on", "is"};
+        String[] arr3 = {"listen", "silent", "enlist", "abc", "cab", "bac", "rat", "tar", "art"};
+
+        System.out.println(anagrams(arr1));
+        System.out.println(anagrams(arr2));
+        System.out.println(anagrams(arr3));
+    }
+}
+
+
+Link:  <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/hashing-gfg-160/problem/print-anagrams-together> 
