@@ -1,0 +1,61 @@
+============================ Question ===================================
+
+Given an array of integers arr[] and a number k, count the number of subarrays having XOR of their elements as k.
+
+Examples: 
+
+Input: arr[] = [4, 2, 2, 6, 4], k = 6
+Output: 4
+Explanation: The subarrays having XOR of their elements as 6 are [4, 2], [4, 2, 2, 6, 4], [2, 2, 6], and [6]. Hence, the answer is 4.
+Input: arr[] = [5, 6, 7, 8, 9], k = 5
+Output: 2
+Explanation: The subarrays having XOR of their elements as 5 are [5] and [5, 6, 7, 8, 9]. Hence, the answer is 2.
+Input: arr[] = [1, 1, 1, 1], k = 0
+Output: 4
+Explanation: The subarrays are [1, 1], [1, 1], [1, 1] and [1, 1, 1, 1].
+Constraints:
+
+1 ≤ arr.size() ≤ 105
+0 ≤ arr[i] ≤105
+0 ≤ k ≤ 105
+
+============================ Answer ===================================
+
+import java.util.HashMap;
+
+public class SubarrayXOR {
+
+    public static long subarrayXor(int arr[], int k) {
+        long count = 0;
+        int xorSum = 0;
+        HashMap<Integer, Integer> xorMap = new HashMap<>();
+        xorMap.put(0, 1);
+
+        for (int num : arr) {
+            xorSum ^= num;
+            count += xorMap.getOrDefault(xorSum ^ k, 0);
+            xorMap.put(xorSum, xorMap.getOrDefault(xorSum, 0) + 1);
+        }
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+        int[] arr1 = {4, 2, 2, 6, 4};
+        int k1 = 6;
+        System.out.println(subarrayXor(arr1, k1)); // Output: 4
+
+        int[] arr2 = {5, 6, 7, 8, 9};
+        int k2 = 5;
+        System.out.println(subarrayXor(arr2, k2)); // Output: 2
+
+        int[] arr3 = {1, 1, 1, 1};
+        int k3 = 0;
+        System.out.println(subarrayXor(arr3, k3)); // Output: 4
+    }
+}
+
+
+
+Link : <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/hashing-gfg-160/problem/count-subarray-with-given-xor> 
+
