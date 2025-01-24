@@ -1,0 +1,72 @@
+====================== Question ==========================
+
+Given an array arr[] of non-negative integers, where each element arr[i] represents the height of the vertical lines, find the maximum amount of water that can be contained between any two lines, together with the x-axis.
+
+Note: In the case of a single vertical line it will not be able to hold water.
+
+Examples:
+
+Input: arr[] = [1, 5, 4, 3]
+Output: 6
+Explanation: 5 and 3 are 2 distance apart. So the size of the base is 2. Height of container = min(5, 3) = 3. So, total area to hold water = 3 * 2 = 6.
+Input: arr[] = [3, 1, 2, 4, 5]
+Output: 12
+Explanation: 5 and 3 are 4 distance apart. So the size of the base is 4. Height of container = min(5, 3) = 3. So, total area to hold water = 4 * 3 = 12.
+Input: arr[] = [2, 1, 8, 6, 4, 6, 5, 5]
+Output: 25 
+Explanation: 8 and 5 are 5 distance apart. So the size of the base is 5. Height of container = min(8, 5) = 5. So, the total area to hold water = 5 * 5 = 25.
+Constraints:
+1<= arr.size() <=105
+1<= arr[i] <=104
+
+
+
+
+====================== Answer ==========================
+
+public class MaxWaterContainer {
+    public int maxWater(int arr[]) {
+        int maxArea = 0; // To store the maximum water area
+        int left = 0; // Left pointer
+        int right = arr.length - 1; // Right pointer
+
+        // Two-pointer approach
+        while (left < right) {
+            // Calculate the current area
+            int height = Math.min(arr[left], arr[right]);
+            int width = right - left;
+            int currentArea = height * width;
+
+            // Update the maximum area if the current area is greater
+            maxArea = Math.max(maxArea, currentArea);
+
+            // Move the pointer pointing to the smaller height
+            if (arr[left] < arr[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return maxArea; // Return the maximum water area
+    }
+
+    public static void main(String[] args) {
+        MaxWaterContainer container = new MaxWaterContainer();
+
+        // Example 1
+        int[] arr1 = {1, 5, 4, 3};
+        System.out.println(container.maxWater(arr1)); // Output: 6
+
+        // Example 2
+        int[] arr2 = {3, 1, 2, 4, 5};
+        System.out.println(container.maxWater(arr2)); // Output: 12
+
+        // Example 3
+        int[] arr3 = {2, 1, 8, 6, 4, 6, 5, 5};
+        System.out.println(container.maxWater(arr3)); // Output: 25
+    }
+}
+
+
+Link: <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/two-pointer-technique-gfg-160/problem/container-with-most-water0535> 
