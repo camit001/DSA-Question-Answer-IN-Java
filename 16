@@ -1,0 +1,66 @@
+====================== Question ==========================
+
+Given an array arr of 0s and 1s. Find and return the length of the longest subarray with equal number of 0s and 1s.
+
+Examples:
+
+Input: arr[] = [1, 0, 1, 1, 1, 0, 0]
+Output: 6
+Explanation: arr[1...6] is the longest subarray with three 0s and three 1s.
+Input: arr[] = [0, 0, 1, 1, 0]
+Output: 4
+Explnation: arr[0...3] or arr[1...4] is the longest subarray with two 0s and two 1s.
+Input: arr[] = [0]
+Output: 0
+Explnation: There is no subarray with an equal number of 0s and 1s.
+Constraints:
+1 <= arr.size() <= 10^5
+0 <= arr[i] <= 1
+
+
+====================== Answer ==========================
+
+import java.util.HashMap;
+
+public class Solution {
+    public int maxLen(int[] arr) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int maxLength = 0, count = 0;
+
+        // Initialize the map with count 0 at index -1
+        map.put(0, -1);
+
+        // Traverse the array
+        for (int i = 0; i < arr.length; i++) {
+            // Increment or decrement count
+            count += (arr[i] == 1) ? 1 : -1;
+
+            // Check if count has been seen before
+            if (map.containsKey(count)) {
+                // Update maxLength if the subarray is longer
+                maxLength = Math.max(maxLength, i - map.get(count));
+            } else {
+                // Store the first occurrence of the count
+                map.put(count, i);
+            }
+        }
+
+        return maxLength;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        int[] arr1 = {1, 0, 1, 1, 1, 0, 0};
+        System.out.println(solution.maxLen(arr1)); // Output: 6
+
+        int[] arr2 = {0, 0, 1, 1, 0};
+        System.out.println(solution.maxLen(arr2)); // Output: 4
+
+        int[] arr3 = {0};
+        System.out.println(solution.maxLen(arr3)); // Output: 0
+    }
+}
+
+
+Link: <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/prefix-sum-gfg-160/problem/largest-subarray-of-0s-and-1s> 
