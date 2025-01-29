@@ -1,0 +1,90 @@
+======================= Question ===========================
+
+
+Given the head of a linked list, the task is to reverse this list and return the reversed head.
+
+Examples:
+
+Input: head: 1 -> 2 -> 3 -> 4 -> NULL
+Output: head: 4 -> 3 -> 2 -> 1 -> NULL
+Explanation:
+
+Input: head: 2 -> 7 -> 10 -> 9 -> 8 -> NULL
+Output: head: 8 -> 9 -> 10 -> 7 -> 2 -> NULL
+Explanation:
+
+Input: head: 2 -> NULL
+Output: 2 -> NULL
+Explanation:
+
+Constraints:
+1 <= number of nodes, data of nodes <= 10^5
+
+
+
+======================= Answer ===========================
+
+// Node class definition
+class Node {
+    int data;
+    Node next;
+
+    Node(int value) {
+        this.data = value;
+        this.next = null;
+    }
+}
+
+public class ReverseLinkedList {
+
+    // Function to reverse the linked list
+    Node reverseList(Node head) {
+        Node temp = null;
+        while (head != null) {
+            Node curr = head.next;
+            head.next = temp;
+            temp = head;
+            head = curr;
+        }
+        return temp;
+    }
+
+    // Helper method to print the linked list
+    void printList(Node head) {
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data);
+            if (current.next != null) {
+                System.out.print(" ");
+            }
+            current = current.next;
+        }
+        System.out.println();
+    }
+
+    // Main method to test the reverseList function
+    public static void main(String[] args) {
+        ReverseLinkedList solution = new ReverseLinkedList();
+
+        // Construct the linked list: 1 -> 2 -> 3 -> 4
+        Node head = new Node(1);
+        head.next = new Node(2);
+        head.next.next = new Node(3);
+        head.next.next.next = new Node(4);
+
+        // Print the original list
+        System.out.print("Original List: ");
+        solution.printList(head); // Output: 1 2 3 4
+
+        // Reverse the list
+        Node reversedHead = solution.reverseList(head);
+
+        // Print the reversed list
+        System.out.print("Reversed List: ");
+        solution.printList(reversedHead); // Expected Output: 4 3 2 1
+    }
+}
+
+
+
+Link:  <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/linked-list-gfg-160/problem/reverse-a-linked-list> 
