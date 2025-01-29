@@ -1,0 +1,67 @@
+===================== Question ===========================
+
+Given an array, arr[] construct a product array, res[] where each element in res[i] is the product of all elements in arr[] except arr[i]. Return this resultant array, res[].
+Note: Each element is res[] lies inside the 32-bit integer range.
+
+Examples:
+
+Input: arr[] = [10, 3, 5, 6, 2]
+Output: [180, 600, 360, 300, 900]
+Explanation: For i=0, res[i] = 3 * 5 * 6 * 2 is 180.
+For i = 1, res[i] = 10 * 5 * 6 * 2 is 600.
+For i = 2, res[i] = 10 * 3 * 6 * 2 is 360.
+For i = 3, res[i] = 10 * 3 * 5 * 2 is 300.
+For i = 4, res[i] = 10 * 3 * 5 * 6 is 900.
+Input: arr[] = [12, 0]
+Output: [0, 12]
+Explanation: For i = 0, res[i] is 0.
+For i = 1, res[i] is 12.
+Constraints:
+2 <= arr.size() <= 10^5
+-100 <= arr[i] <= 100
+
+
+
+===================== Answer ===========================
+
+import java.util.Arrays;
+
+public class ProductArray {
+    public static int[] productExceptSelf(int arr[]) {
+        int n = arr.length;
+        int[] res = new int[n];
+
+        // Step 1: Initialize prefix and suffix arrays
+        int[] prefix = new int[n];
+        int[] suffix = new int[n];
+
+        // Step 2: Build the prefix array
+        prefix[0] = 1;
+        for (int i = 1; i < n; i++) {
+            prefix[i] = prefix[i - 1] * arr[i - 1];
+        }
+
+        // Step 3: Build the suffix array
+        suffix[n - 1] = 1;
+        for (int i = n - 2; i >= 0; i--) {
+            suffix[i] = suffix[i + 1] * arr[i + 1];
+        }
+
+        // Step 4: Construct the result array
+        for (int i = 0; i < n; i++) {
+            res[i] = prefix[i] * suffix[i];
+        }
+
+        return res;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {10, 3, 5, 6, 2};
+        int[] res = productExceptSelf(arr);
+        System.out.println(Arrays.toString(res));
+    }
+}
+
+
+
+Link: <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/prefix-sum-gfg-160/problem/product-array-puzzle4525> 
