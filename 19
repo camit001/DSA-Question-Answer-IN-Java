@@ -1,0 +1,106 @@
+========================= Question ==========================
+
+Given the head of a singly linked list, your task is to left rotate the linked list k times.
+
+Examples:
+
+Input: head = 10 -> 20 -> 30 -> 40 -> 50, k = 4
+Output: 50 -> 10 -> 20 -> 30 -> 40
+Explanation:
+Rotate 1: 20 -> 30 -> 40 -> 50 -> 10
+Rotate 2: 30 -> 40 -> 50 -> 10 -> 20
+Rotate 3: 40 -> 50 -> 10 -> 20 -> 30
+Rotate 4: 50 -> 10 -> 20 -> 30 -> 40
+
+Input: head = 10 -> 20 -> 30 -> 40 , k = 6
+Output: 30 -> 40 -> 10 -> 20 
+ 
+Constraints:
+
+1 <= number of nodes <= 10^5
+0 <= k <= 10^9
+0 <= data of node <= 10^9
+
+
+========================= Answer ==========================
+
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class LinkedList {
+    Node head;
+
+    // Method to rotate the list left by k times
+    public Node rotate(Node head, int k) {
+        if (head == null || k == 0) return head;
+
+        Node current = head;
+        int length = 1;
+
+        while (current.next != null) {
+            current = current.next;
+            length++;
+        }
+
+        k = k % length;
+        if (k == 0) return head;
+
+        current.next = head; // Make the list circular
+        current = head;
+
+        for (int i = 1; i < k; i++) {
+            current = current.next;
+        }
+
+        head = current.next;
+        current.next = null;
+
+        return head;
+    }
+
+    public void addToTheLast(Node node) {
+        if (head == null) {
+            head = node;
+        } else {
+            Node temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = node;
+        }
+    }
+
+    public void printList() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        LinkedList list = new LinkedList();
+        list.addToTheLast(new Node(10));
+        list.addToTheLast(new Node(20));
+        list.addToTheLast(new Node(30));
+        list.addToTheLast(new Node(40));
+
+        int k = 6;
+        list.head = list.rotate(list.head, k);
+        list.printList();  // Output: 30 40 10 20
+    }
+}
+
+
+
+
+Link:  <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/linked-list-gfg-160/problem/rotate-a-linked-list> 
+
