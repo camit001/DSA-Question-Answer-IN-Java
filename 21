@@ -1,0 +1,120 @@
+======================== Question ==========================
+
+
+Given the head a linked list, the task is to reverse every k node in the linked list. If the number of nodes is not a multiple of k then the left-out nodes in the end, should be considered as a group and must be reversed.
+
+Examples:
+
+Input: head = 1 -> 2 -> 2 -> 4 -> 5 -> 6 -> 7 -> 8, k = 4
+Output: 4 -> 2 -> 2 -> 1 -> 8 -> 7 -> 6 -> 5
+
+Explanation: The first 4 elements 1, 2, 2, 4 are reversed first and then the next 4 elements 5, 6, 7, 8. Hence, the resultant linked list is 4 -> 2 -> 2 -> 1 -> 8 -> 7 -> 6 -> 5.
+Input: head = 1 -> 2 -> 3 -> 4 -> 5, k = 3
+Output: 3 -> 2 -> 1 -> 5 -> 4
+
+Explanation: The first 3 elements 1, 2, 3 are reversed first and then left out elements 4, 5 are reversed. Hence, the resultant linked list is 3 -> 2 -> 1 -> 5 -> 4.
+Constraints:
+1 <= size of linked list <= 10^5
+1 <= data of nodes <= 10^6
+1 <= k <= size of linked list 
+
+
+======================== Answer ==========================
+
+class Node {
+    int val;
+    Node next;
+    Node(int val) { this.val = val; }
+}
+
+public class ReverseKGroup {
+    public static Node reverseKGroup(Node head, int k) {
+        if (head == null || k == 1) {
+            return head;
+        }
+
+        Node dummy = new Node(0);
+        dummy.next = head;
+        Node curr = dummy, nex = dummy, pre = dummy;
+        int count = 0;
+
+        // Count the number of nodes in the linked list
+        while (curr.next != null) {
+            curr = curr.next;
+            count++;
+        }
+
+        // Perform the reverse in groups of k
+        while (count >= k) {
+            curr = pre.next;
+            nex = curr.next;
+            for (int i = 1; i < k; i++) {
+                curr.next = nex.next;
+                nex.next = pre.next;
+                pre.next = nex;
+                nex = curr.next;
+            }
+            pre = curr;
+            count -= k;
+        }
+
+        // Check for the left-out nodes and reverse them
+        if (count > 0) {
+            pre.next = reverseLeftOutNodes(pre.next, count);
+        }
+
+        return dummy.next;
+    }
+
+    private static Node reverseLeftOutNodes(Node head, int count) {
+        Node prev = null;
+        Node curr = head;
+        Node next = null;
+        while (count > 0) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+            count--;
+        }
+        head.next = curr;
+        return prev;
+    }
+
+    // Utility method to print the linked list
+    public static void printList(Node head) {
+        while (head != null) {
+            System.out.print(head.val + " -> ");
+            head = head.next;
+        }
+        System.out.println("null");
+    }
+
+    public static void main(String[] args) {
+        Node head = new Node(3);
+        head.next = new Node(5);
+        head.next.next = new Node(4);
+        head.next.next.next = new Node(7);
+        head.next.next.next.next = new Node(7);
+        head.next.next.next.next.next = new Node(9);
+        head.next.next.next.next.next.next = new Node(8);
+        head.next.next.next.next.next.next.next = new Node(3);
+        head.next.next.next.next.next.next.next.next = new Node(1);
+        head.next.next.next.next.next.next.next.next.next = new Node(8);
+        head.next.next.next.next.next.next.next.next.next.next = new Node(6);
+
+        System.out.println("Original List:");
+        printList(head);
+
+        int k = 3;
+        head = reverseKGroup(head, k);
+
+        System.out.println("Reversed List in groups of " + k + ":");
+        printList(head);
+    }
+}
+
+
+
+
+Link: <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/linked-list-gfg-160/problem/reverse-a-linked-list-in-groups-of-given-size> 
