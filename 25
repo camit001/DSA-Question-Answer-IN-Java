@@ -1,0 +1,123 @@
+======================= Question =========================
+
+Given a head of the singly linked list. If a loop is present in the list then return the first node of the loop else return NULL.
+
+Custom Input format:
+A head of a singly linked list and a pos (1-based index) which denotes the position of the node to which the last node points to. If pos = 0, it means the last node points to null, indicating there is no loop.
+
+Examples:
+
+Input:
+ 
+Output: 3
+Explanation: We can see that there exists a loop in the given linked list and the first node of the loop is 3.
+Input:
+ 
+Output: -1
+Explanation: No loop exists in the above linked list.So the output is -1.
+Constraints:
+1 <= no. of nodes <= 10^6
+1 <= node->data <= 10^6 
+
+
+======================= Answer =========================
+
+
+import java.util.*;
+
+class Node {
+    int data;
+    Node next;
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}
+
+public class Solution {
+    
+    // Function to detect the first node of the loop
+    public static Node findFirstNode(Node head) {
+        if (head == null || head.next == null) {
+            return null;
+        }
+
+        Node slow = head;
+        Node fast = head;
+
+        // Detecting if there is a cycle in the list
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                // There is a cycle, find the entry point of the cycle
+                slow = head;
+                while (slow != fast) {
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+                return slow; // The entry point of the cycle
+            }
+        }
+
+        return null; // No cycle found
+    }
+    
+    // Function to create a loop in the list for testing purposes
+    public static Node createLinkedList(int[] arr, int pos) {
+        Node head = null;
+        Node temp = null;
+        Node loopNode = null;
+
+        for (int i = 0; i < arr.length; i++) {
+            Node newNode = new Node(arr[i]);
+            if (head == null) {
+                head = newNode;
+            } else {
+                temp.next = newNode;
+            }
+            temp = newNode;
+            if (i == pos - 1) {
+                loopNode = newNode;
+            }
+        }
+        
+        if (temp != null && loopNode != null) {
+            temp.next = loopNode;
+        }
+
+        return head;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Enter number of nodes in the linked list:");
+        int n = scanner.nextInt();
+        
+        int[] arr = new int[n];
+        System.out.println("Enter the nodes:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scanner.nextInt();
+        }
+        
+        System.out.println("Enter the position where the loop starts (1-based index, 0 if no loop):");
+        int pos = scanner.nextInt();
+        
+        Node head = createLinkedList(arr, pos);
+        Node loopNode = findFirstNode(head);
+        
+        if (loopNode != null) {
+            System.out.println("First node of the loop is: " + loopNode.data);
+        } else {
+            System.out.println("No loop found.");
+        }
+        
+        scanner.close();
+    }
+}
+
+
+
+Link:  <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/linked-list-gfg-160/problem/find-the-first-node-of-loop-in-linked-list--170645> 
