@@ -1,0 +1,65 @@
+======================= Question ======================
+
+
+Given a string s, which may contain duplicate characters, your task is to generate and return an array of all unique permutations of the string. You can return your answer in any order.
+
+Examples:
+
+Input: s = "ABC"
+Output: ["ABC", "ACB", "BAC", "BCA", "CAB", "CBA"]
+Explanation: Given string ABC has 6 unique permutations.
+Input: s = "ABSG"
+Output: ["ABGS", "ABSG", "AGBS", "AGSB", "ASBG", "ASGB", "BAGS", "BASG", "BGAS", "BGSA", "BSAG", "BSGA", "GABS", "GASB", "GBAS", "GBSA", "GSAB", "GSBA", "SABG", "SAGB", "SBAG", "SBGA", "SGAB", "SGBA"]
+Explanation: Given string ABSG has 24 unique permutations.
+Input: s = "AAA"
+Output: ["AAA"]
+Explanation: No other unique permutations can be formed as all the characters are same.
+Constraints:
+1 <= s.size() <= 9
+s contains only Uppercase english alphabets
+
+
+======================= Answer ======================
+
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+public class UniquePermutations {
+    public static void main(String[] args) {
+        String s = "ABSG";
+        System.out.println(findPermutation(s));
+    }
+
+    public static ArrayList<String> findPermutation(String s) {
+        Set<String> result = new HashSet<>();
+        permute(s.toCharArray(), 0, result);
+        return new ArrayList<>(result);
+    }
+
+    private static void permute(char[] chars, int index, Set<String> result) {
+        if (index == chars.length - 1) {
+            result.add(new String(chars));
+            return;
+        }
+        Set<Character> appeared = new HashSet<>();
+        for (int i = index; i < chars.length; i++) {
+            if (appeared.add(chars[i])) {
+                swap(chars, index, i);
+                permute(chars, index + 1, result);
+                swap(chars, index, i);
+            }
+        }
+    }
+
+    private static void swap(char[] chars, int i, int j) {
+        char temp = chars[i];
+        chars[i] = chars[j];
+        chars[j] = temp;
+    }
+}
+
+
+
+Link: <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/recursion-and-backtracking-gfg-160/problem/permutations-of-a-given-string2041>
