@@ -1,0 +1,53 @@
+====================== Question ========================
+
+
+Implement the function power(b, e), which calculates b raised to the power of e (i.e. be).
+
+Examples:
+
+Input: b = 3.00000, e = 5
+Output: 243.00000
+Input: b = 0.55000, e = 3
+Output: 0.16638
+Input: b = -0.67000, e = -7
+Output: -16.49971
+Constraints:
+
+-100.0 < b < 100.0
+-109 <= e <= 109
+Either b is not zero or e > 0.
+-104 <= be <= 104
+
+
+====================== Answer ========================
+
+public class PowerFunction {
+    public static void main(String[] args) {
+        System.out.println(power(3.00000, 5));  // Output: 243.00000
+        System.out.println(power(0.55000, 3));  // Output: 0.16638
+        System.out.println(power(-0.67000, -7));  // Output: -16.49971
+    }
+
+    public static double power(double b, int e) {
+        if (e == 0) {
+            return 1.0;
+        }
+        if (e < 0) {
+            b = 1 / b;
+            e = -e;
+        }
+        double result = 1.0;
+        while (e > 0) {
+            if ((e % 2) == 1) {
+                result *= b;
+            }
+            b *= b;
+            e /= 2;
+        }
+        return result;
+    }
+}
+
+
+
+Link: <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/recursion-and-backtracking-gfg-160/problem/powx-n> 
