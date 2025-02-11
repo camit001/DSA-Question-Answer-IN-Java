@@ -1,0 +1,124 @@
+======================== Question =========================
+
+Given an incomplete Sudoku configuration in terms of a 9x9  2-D interger square matrix, mat[][], the task is to solve the Sudoku. It is guaranteed that the input Sudoku will have exactly one solution.
+
+A sudoku solution must satisfy all of the following rules:
+
+Each of the digits 1-9 must occur exactly once in each row.
+Each of the digits 1-9 must occur exactly once in each column.
+Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.
+Note: Zeros represent blanks to be filled with numbers 1-9, while non-zero cells are fixed and cannot be changed.
+
+Examples:
+
+Input: mat[][] = 
+
+Output:
+
+Explanation: Each row, column and 3 x 3 box of the output matrix contains unique numbers.
+Input: mat[][] = 
+
+Output:
+
+Explanation: Each row, column and 3 x 3 box of the output matrix contains unique numbers.
+Constraints:
+mat.size() = 9
+mat[i].size() = 9
+0 ≤ mat[i][j] ≤ 9
+
+
+
+======================== Answer =========================
+
+
+public class SudokuSolver {
+    private static final int SIZE = 9;
+
+    public static void solveSudoku(int[][] mat) {
+        solve(mat);
+    }
+
+    private static boolean solve(int[][] mat) {
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
+                if (mat[row][col] == 0) {
+                    for (int num = 1; num <= SIZE; num++) {
+                        if (isValid(mat, row, col, num)) {
+                            mat[row][col] = num;
+                            if (solve(mat)) {
+                                return true;
+                            }
+                            mat[row][col] = 0;
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static boolean isValid(int[][] mat, int row, int col, int num) {
+        // Check row
+        for (int x = 0; x < SIZE; x++) {
+            if (mat[row][x] == num) {
+                return false;
+            }
+        }
+
+        // Check column
+        for (int x = 0; x < SIZE; x++) {
+            if (mat[x][col] == num) {
+                return false;
+            }
+        }
+
+        // Check 3x3 sub-box
+        int startRow = row - row % 3;
+        int startCol = col - col % 3;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (mat[startRow + i][startCol + j] == num) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public static void printBoard(int[][] mat) {
+        for (int r = 0; r < SIZE; r++) {
+            for (int d = 0; d < SIZE; d++) {
+                System.out.print(mat[r][d]);
+                System.out.print(" ");
+            }
+            System.out.print("\n");
+
+            if ((r + 1) % 3 == 0) {
+                System.out.print("");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[][] mat = new int[][] {
+            {5, 3, 0, 0, 7, 0, 0, 0, 0},
+            {6, 0, 0, 1, 9, 5, 0, 0, 0},
+            {0, 9, 8, 0, 0, 0, 0, 6, 0},
+            {8, 0, 0, 0, 6, 0, 0, 0, 3},
+            {4, 0, 0, 8, 0, 3, 0, 0, 1},
+            {7, 0, 0, 0, 2, 0, 0, 0, 6},
+            {0, 6, 0, 0, 0, 0, 2, 8, 0},
+            {0, 0, 0, 4, 1, 9, 0, 0, 5},
+            {0, 0, 0, 0, 8, 0, 0, 7, 9}
+        };
+
+        solveSudoku(mat);
+        printBoard(mat);
+    }
+}
+
+
+
+Link: <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/recursion-and-backtracking-gfg-160/problem/solve-the-sudoku-1587115621>
