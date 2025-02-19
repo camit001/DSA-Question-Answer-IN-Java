@@ -1,0 +1,139 @@
+====================== Question =======================
+
+Tree Boundary Traversal
+
+Given a Binary Tree, find its Boundary Traversal. The traversal should be in the following order: 
+	1. Left Boundary: This includes all the nodes on the path from the root to the leftmost leaf node. You must prefer the left child over the right child when traversing. Do not include leaf nodes in this section.
+	2. Leaf Nodes: All leaf nodes, in left-to-right order, that are not part of the left or right boundary.
+	3. Reverse Right Boundary: This includes all the nodes on the path from the rightmost leaf node to the root, traversed in reverse order. You must prefer the right child over the left child when traversing. Do not include the root in this section if it was already included in the left boundary.
+Note: If the root doesn't have a left subtree or right subtree, then the root itself is the left or right boundary. 
+Examples:
+Input: root[] = [1, 2, 3, 4, 5, 6, 7, N, N, 8, 9, N, N, N, N]
+Output: [1, 2, 4, 8, 9, 6, 7, 3]
+Explanation:
+
+
+Input: root[] = [1, 2, N, 4, 9, 6, 5, N, 3, N, N, N, N 7, 8]
+Output: [1, 2, 4, 6, 5, 7, 8]
+Explanation:
+
+
+As the root doesn't have a right subtree, the right boundary is not included in the traversal.
+Input: root[] = [1, N, 2, N, 3, N, 4, N, N] 
+    1
+     \
+      2
+       \
+        3
+         \
+          4
+
+Output: [1, 4, 3, 2]
+Explanation:
+Left boundary: [1] (as there is no left subtree)
+Leaf nodes: [4]
+Right boundary: [3, 2] (in reverse order)
+Final traversal: [1, 4, 3, 2]
+Constraints:
+1 ≤ number of nodes ≤ 10^5
+1 ≤ node->data ≤ 10^5
+
+
+====================== Answer =======================
+
+
+import java.util.ArrayList;
+
+class Node {
+    int data;
+    Node left, right;
+
+    Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+public class BoundaryTraversal {
+    Node root;
+
+    // Function to perform the boundary traversal
+    public ArrayList<Integer> boundaryTraversal(Node node) {
+        ArrayList<Integer> result = new ArrayList<>();
+        if (node == null) return result;
+
+        // Add root
+        result.add(node.data);
+
+        // Get left boundary (excluding leaf nodes)
+        leftBoundary(node.left, result);
+
+        // Get leaf nodes
+        leafNodes(node.left, result);
+        leafNodes(node.right, result);
+
+        // Get right boundary (excluding leaf nodes and root, reverse order)
+        rightBoundary(node.right, result);
+
+        return result;
+    }
+
+    private void leftBoundary(Node node, ArrayList<Integer> result) {
+        if (node == null) return;
+
+        if (node.left != null) {
+            result.add(node.data);
+            leftBoundary(node.left, result);
+        } else if (node.right != null) {
+            result.add(node.data);
+            leftBoundary(node.right, result);
+        }
+        // Do not add leaf nodes (they will be added separately)
+    }
+
+    private void leafNodes(Node node, ArrayList<Integer> result) {
+        if (node == null) return;
+
+        leafNodes(node.left, result);
+
+        if (node.left == null && node.right == null) {
+            result.add(node.data);
+        }
+
+        leafNodes(node.right, result);
+    }
+
+    private void rightBoundary(Node node, ArrayList<Integer> result) {
+        if (node == null) return;
+
+        if (node.right != null) {
+            rightBoundary(node.right, result);
+            result.add(node.data); // Add after child visit (reverse)
+        } else if (node.left != null) {
+            rightBoundary(node.left, result);
+            result.add(node.data); // Add after child visit (reverse)
+        }
+        // Do not add leaf nodes (they will be added separately)
+    }
+
+    // Driver program to test above functions
+    public static void main(String[] args) {
+        BoundaryTraversal tree = new BoundaryTraversal();
+        tree.root = new Node(1);
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(3);
+        tree.root.left.left = new Node(4);
+        tree.root.left.right = new Node(5);
+        tree.root.right.left = new Node(6);
+        tree.root.right.right = new Node(7);
+        tree.root.left.right.left = new Node(8);
+        tree.root.left.right.right = new Node(9);
+
+        ArrayList<Integer> result = tree.boundaryTraversal(tree.root);
+        System.out.println("Boundary Traversal: " + result);
+    }
+}
+
+
+
+Link: <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/tree-gfg-160/problem/boundary-traversal-of-binary-tree> 
