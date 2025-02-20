@@ -1,0 +1,77 @@
+===================== Question ========================
+
+Maximum path sum from any node
+
+Given a binary tree, the task is to find the maximum path sum. The path may start and end at any node in the tree.
+Examples:
+Input: root[] = [10, 2, 10, 20, 1, N, -25, N, N, N, N, 3, 4]
+Output: 42
+Explanation: 
+
+Max path sum is represented using green colour nodes in the above binary tree.
+Input: root[] = [-17, 11, 4, 20, -2, 10]
+Output: 31
+Explanation: 
+
+Max path sum is represented using green colour nodes in the above binary tree.
+Constraints:
+1 ≤ number of nodes ≤ 10^3
+-10^4 ≤ node->data ≤ 10^4
+
+===================== Answer ========================
+
+class Node {
+    int data;
+    Node left, right;
+
+    Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+class BinaryTree {
+    Node root;
+    int maxSum = Integer.MIN_VALUE;
+
+    // Function to calculate the maximum path sum
+    int maxPathSum(Node node) {
+        if (node == null)
+            return 0;
+
+        // Recursively call for left and right subtrees
+        int leftSum = Math.max(0, maxPathSum(node.left));
+        int rightSum = Math.max(0, maxPathSum(node.right));
+
+        // Update the maximum path sum if the path through the current node is greater
+        maxSum = Math.max(maxSum, leftSum + rightSum + node.data);
+
+        // Return the maximum sum of the path ending at the current node
+        return Math.max(leftSum, rightSum) + node.data;
+    }
+
+    // Helper function to initiate the maximum path sum calculation
+    int findMaxSum(Node node) {
+        maxPathSum(node);
+        return maxSum;
+    }
+
+    public static void main(String args[]) {
+        BinaryTree tree = new BinaryTree();
+        tree.root = new Node(10);
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(10);
+        tree.root.left.left = new Node(20);
+        tree.root.left.right = new Node(1);
+        tree.root.right.right = new Node(-25);
+        tree.root.right.right.left = new Node(3);
+        tree.root.right.right.right = new Node(4);
+
+        System.out.println("Maximum path sum is : " + tree.findMaxSum(tree.root));
+    }
+}
+
+
+
+
+Link:  <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/tree-gfg-160/problem/maximum-path-sum-from-any-node> 
