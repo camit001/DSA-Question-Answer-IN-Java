@@ -1,0 +1,70 @@
+====================== Question ========================
+
+K Sum Paths
+
+Given a binary tree and an integer k, determine the number of downward-only paths where the sum of the node values in the path equals k. A path can start and end at any node within the tree but must always move downward (from parent to child).
+Examples:
+Input: k = 7   
+Output: 3
+Explanation: The following paths sum to k 
+
+Input: k = 3
+
+Output: 2 
+Explanation: Path 1 : 1 -> 2 (Sum = 3) Path 2 : 3 (Sum = 3)
+
+
+Constraints:
+1 ≤ number of nodes ≤ 10^4
+-100 ≤ node value ≤ 100
+-10^9 ≤ k ≤ 10^9
+
+
+====================== Answer ========================
+
+import java.util.HashMap;
+
+class Node {
+    int val;
+    Node left, right;
+    Node(int x) { val = x; }
+}
+
+public class KSumPaths {
+    public int sumK(Node root, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1); // Default sum = 0 has one count
+        return helper(root, 0, k, map);
+    }
+
+    private int helper(Node node, int currentSum, int target, HashMap<Integer, Integer> map) {
+        if (node == null) return 0;
+
+        currentSum += node.val;
+        int count = map.getOrDefault(currentSum - target, 0);
+        map.put(currentSum, map.getOrDefault(currentSum, 0) + 1);
+
+        count += helper(node.left, currentSum, target, map);
+        count += helper(node.right, currentSum, target, map);
+        
+        map.put(currentSum, map.get(currentSum) - 1); // Remove the current node's sum from the map
+        
+        return count;
+    }
+
+    public static void main(String[] args) {
+        KSumPaths solution = new KSumPaths();
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+
+        int result = solution.sumK(root, 3);
+        System.out.println(result); // Output: 2
+    }
+}
+
+
+
+Link: <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/tree-gfg-160/problem/k-sum-paths> 
