@@ -1,0 +1,108 @@
+======================== Question =======================
+
+Fixing Two nodes of a BST
+
+Given the root of a Binary search tree(BST), where exactly two nodes were swapped by mistake. Your task is to fix (or correct) the BST by swapping them back. Do not change the structure of the tree.
+Note: It is guaranteed that the given input will form BST, except for 2 nodes that will be wrong. All changes must be reflected in the original Binary search tree(BST).
+ 
+Examples :
+Input: root = [10, 5, 8, 2, 20]
+     
+
+Output: 1
+
+
+Explanation: The nodes 20 and 8 were swapped. 
+Input: root = [5, 10, 20, 2, 8]
+     
+
+Output: 1 
+
+Explanation: The nodes 10 and 5 were swapped.
+Constraints:
+1 ≤ Number of nodes ≤ 10^3
+
+
+======================== Answer =======================
+
+class Node {
+    int data;
+    Node left, right;
+    Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+public class FixBST {
+    Node firstElement = null;
+    Node secondElement = null;
+    Node prevElement = new Node(Integer.MIN_VALUE);
+
+    public void correctBST(Node root) {
+        traverse(root);
+        // Swap the values of the two nodes
+        int temp = firstElement.data;
+        firstElement.data = secondElement.data;
+        secondElement.data = temp;
+    }
+
+    private void traverse(Node root) {
+        if (root == null) return;
+
+        traverse(root.left);
+
+        // If this is the first element out of order
+        if (firstElement == null && prevElement.data >= root.data) {
+            firstElement = prevElement;
+        }
+
+        // If this is the second element out of order
+        if (firstElement != null && prevElement.data >= root.data) {
+            secondElement = root;
+        }
+
+        prevElement = root;
+
+        traverse(root.right);
+    }
+
+    public static void main(String[] args) {
+        FixBST bst = new FixBST();
+
+        // Example 1
+        Node root1 = new Node(10);
+        root1.left = new Node(5);
+        root1.right = new Node(8);
+        root1.left.left = new Node(2);
+        root1.right.right = new Node(20);
+        
+        bst.correctBST(root1);
+        System.out.println("BST fixed: " + bst.validateBST(root1)); // Output: 1
+
+        // Example 2
+        Node root2 = new Node(5);
+        root2.left = new Node(10);
+        root2.right = new Node(20);
+        root2.left.left = new Node(2);
+        root2.left.right = new Node(8);
+
+        bst.correctBST(root2);
+        System.out.println("BST fixed: " + bst.validateBST(root2)); // Output: 1
+    }
+
+    // Method to validate if the tree is a valid BST (optional)
+    public boolean validateBST(Node root) {
+        return validateBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    private boolean validateBST(Node root, int min, int max) {
+        if (root == null) return true;
+        if (root.data <= min || root.data >= max) return false;
+        return validateBST(root.left, min, root.data) && validateBST(root.right, root.data, max);
+    }
+}
+
+
+
+Limk:  <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/tree-gfg-160/problem/fixed-two-nodes-of-a-bst> 
