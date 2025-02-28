@@ -1,0 +1,65 @@
+====================== Question ======================
+
+
+k largest elements
+
+Given an array arr[] of positive integers and an integer k, Your task is to return k largest elements in decreasing order. 
+Examples:
+Input: arr[] = [12, 5, 787, 1, 23], k = 2
+Output: [787, 23]
+Explanation: 1st largest element in the array is 787 and second largest is 23.
+
+Input: arr[] = [1, 23, 12, 9, 30, 2, 50], k = 3 
+Output: [50, 30, 23]
+Explanation: Three Largest elements in the array are 50, 30 and 23.
+Input: arr[] = [12, 23], k = 1
+Output: [23]
+Explanation: 1st Largest element in the array is 23.
+Constraints:
+1 ≤ k ≤ arr.size() ≤ 10^6
+1 ≤ arr[i] ≤ 10^6
+
+
+====================== Answer ======================
+
+import java.util.*;
+
+public class KLargestElements {
+    public ArrayList<Integer> kLargest(int[] arr, int k) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(k);
+        for (int num : arr) {
+            if (minHeap.size() < k) {
+                minHeap.add(num);
+            } else if (num > minHeap.peek()) {
+                minHeap.poll();
+                minHeap.add(num);
+            }
+        }
+
+        ArrayList<Integer> result = new ArrayList<>();
+        while (!minHeap.isEmpty()) {
+            result.add(minHeap.poll());
+        }
+        Collections.sort(result, Collections.reverseOrder());
+        return result;
+    }
+
+    public static void main(String[] args) {
+        KLargestElements obj = new KLargestElements();
+        int[] arr1 = {12, 5, 787, 1, 23};
+        int k1 = 2;
+        System.out.println(obj.kLargest(arr1, k1));
+
+        int[] arr2 = {1, 23, 12, 9, 30, 2, 50};
+        int k2 = 3;
+        System.out.println(obj.kLargest(arr2, k2));
+
+        int[] arr3 = {12, 23};
+        int k3 = 1;
+        System.out.println(obj.kLargest(arr3, k3));
+    }
+}
+
+
+
+Link: <https://www.geeksforgeeks.org/batch/gfg-160-problems/track/heap-gfg-160/problem/k-largest-elements4206> 
